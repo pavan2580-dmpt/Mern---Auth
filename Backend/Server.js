@@ -3,9 +3,17 @@ const app = express()
 const mongoose = require('mongoose')
 const bodypaser = require('body-parser')
 const cors = require('cors')
+const rateLimiter = require('express-rate-limit')
 
+const appRatelimiter = rateLimiter({
+    windowMs: 1 * 60 * 1000,
+    max: 10,
+})
+
+app.use("/",appRatelimiter)
+app.use(bodypaser.json())
 app.use(express.json())
-app.use(cors())
+app.use(cors("*"))
 
 
 const DB_Conn = async()=>{

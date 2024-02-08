@@ -3,6 +3,10 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import './Register.css';
 import { Link } from 'react-router-dom';
+import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useState } from 'react'
+
+
 
 const Register = () => {
     const {
@@ -10,6 +14,7 @@ const Register = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
+    const [Resp,SetResponse] = useState(null)
 
     const onSubmit =async (data) => {
       const resp =  await axios.post('http://localhost:4000/register',{
@@ -17,12 +22,15 @@ const Register = () => {
             email:data.email,
             pass:data.password
         })
+        SetResponse(resp.data)
         console.log(resp)
-
     };
 
+
     return (
-        <div className="main-register-container">
+        <div className="main-register-container ">
+            {/* {-------------------------------notification-------------------} */}
+            {/* ------------------------------end of notofication---------------- */}
             <div className="register-container">
                 <h2>Register</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -62,7 +70,7 @@ const Register = () => {
                             {...register('password', {
                                 required: 'Password is required',
                                 minLength: {
-                                    value: 8,
+                                    value: 5,
                                     message: 'Password must be at least 8 characters long',
                                 },
                             })}

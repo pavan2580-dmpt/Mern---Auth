@@ -28,7 +28,7 @@ const Login = () => {
                                 required: 'Email is required',
                             })}
                         />
-                        {errors.email && <p>{errors.email.message}</p>}
+                        {errors.email && <p className='p'>{errors.email.message}</p>}
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
@@ -39,12 +39,12 @@ const Login = () => {
                             {...register('password', {
                                 required: 'Password is required',
                                 minLength: {
-                                    value: 8,
+                                    value: 5,
                                     message: 'Password must be at least 8 characters long',
                                 },
                             })}
                         />
-                        {errors.password && <p>{errors.password.message}</p>}
+                        {errors.password && <p className='p'>{errors.password.message}</p>}
                     </div>
                     <div className="form-group">
                         <button type="submit">Login</button>
