@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Protected.css"
+import { useNavigate } from 'react-router-dom'
 import c1 from "../assets/country-1.jpg"
 import c2 from "../assets/country-2.jpg"
 import c3 from "../assets/country-3.jpg"
@@ -12,8 +13,30 @@ import { FaEarthAfrica } from "react-icons/fa6";
 import { RiRoadMapLine } from "react-icons/ri";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
+import { jwtDecode } from 'jwt-decode'
+import Cookies from 'js-cookie'
 
 function Protected() {
+  const navigation = useNavigate();
+  const [name,SetName] = useState('your Name')
+  const check = async ()=>{
+    const Token = Cookies.get("Token")
+    if(Token){
+      const jwt =await jwtDecode(Token)
+      if(jwt.user.status){
+          SetName(jwt.user.username)
+      }
+      else{
+        navigation('/')
+      }
+    }else{
+      navigation('/')
+    }
+  }
+  useEffect(
+    ()=>{
+      check()
+    },[Cookies.get("Token")])
   return (
     <>
       <nav>
@@ -21,7 +44,7 @@ function Protected() {
           <a href="#">Travel.co</a>
         </div>
         <div className="nav__links">
-          <p style={{color:'white',fontSize:'25px'}}>Welcome your name</p>
+          <p style={{color:'white',fontSize:'25px'}}>Welcome {name}</p>
           <FaUserCircle size={30} color='white' style={{cursor:'pointer'}}/>
         </div>
       </nav>

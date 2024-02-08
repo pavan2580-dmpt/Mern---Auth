@@ -63,7 +63,7 @@ routes.route("/login").post(
                                 username:Check.username,
                                 status:1
                             }},key,{expiresIn:'1d'})
-                            res.status(200).send({"token":Token,"email":Check.email,"username":Check.username})
+                            res.status(200).send(Token)
                     }
                     else{
                         res.send("Wrong password")

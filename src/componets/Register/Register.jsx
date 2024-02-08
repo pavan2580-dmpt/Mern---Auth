@@ -1,36 +1,45 @@
 import axios from 'axios';
-import React from 'react';
+import React,{useRef, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import './Register.css';
-import { Link } from 'react-router-dom';
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Link,useNavigate } from 'react-router-dom';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Register = () => {
+
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const [Resp,SetResponse] = useState(null)
 
-    const onSubmit =async (data) => {
-      const resp =  await axios.post('http://localhost:4000/register',{
-            username:data.username,
-            email:data.email,
-            pass:data.password
-        })
-        SetResponse(resp.data)
-        console.log(resp)
-    };
+    const onSubmit = async (data) => {
+        try {
+          const resp = await axios.post('http://localhost:4000/register', {
+            username: data.username,
+            email: data.email,
+            pass: data.password,
+          });
+          if(resp.data === "Email in use" || resp.data === "error in creating new user")
+            toast(resp.data)
+          else
+            navigate('/')
+        } 
+        catch (error) {
+          console.error("Registration failed:", error.message);
+        }
+      };
+      
 
 
     return (
         <div className="main-register-container ">
-            {/* {-------------------------------notification-------------------} */}
-            {/* ------------------------------end of notofication---------------- */}
+            <ToastContainer />
             <div className="register-container">
                 <h2>Register</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
