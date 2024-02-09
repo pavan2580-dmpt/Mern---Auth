@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const bodypaser = require('body-parser')
 const cors = require('cors')
 const rateLimiter = require('express-rate-limit')
+require('dotenv').config();
 
 const appRatelimiter = rateLimiter({
     windowMs: 1 * 60 * 1000,
@@ -17,7 +18,7 @@ app.use(cors("*"))
 
 
 const DB_Conn = async()=>{
-    await mongoose.connect('mongodb+srv://pavanganesh:pavanganesh@cluster0.axrs7n2.mongodb.net/Auth?retryWrites=true&w=majority').then(
+    await mongoose.connect(process.env.MONGO_URI).then(
         ()=>{
             console.log("Connected to Database...")
         }
